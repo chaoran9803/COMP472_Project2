@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer # Convert text to numerical features using TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
@@ -17,7 +18,7 @@ print(X.shape) # it will show (5572, 8674) which means we have 5572 emails and 8
 
 # split the data into training and testing sets
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 42, stratify = Y) # split the data into training and testing sets, with 20% of the data used for testing. The random_state parameter ensures reproducibility, and stratify ensures that the class distribution is maintained in both sets.
-model = MultinomialNB() # create an instance of the Multinomial Naive Bayes classifier
+model = LogisticRegression(class_weight='balanced', max_iter=1000) # create an instance of the Logistic Regression classifier
 model.fit(X_train, Y_train) # train the model using the training data
 print("Model has been trained successfully!!!")
 
@@ -48,3 +49,25 @@ plt.xlabel('Label')
 plt.ylabel('Number of Messages')
 plt.savefig('chart.png')
 plt.show()
+
+# Interactive prediction loop
+print("\nWelcome to Spam Detection AI")
+print("Type 'quit' to exit.\n")
+
+while True:
+    user_input = input("Enter message: ")
+    
+    if user_input.lower() == "quit":
+        print("Goodbye!")
+        break
+    
+
+    features = vectorizer.transform([user_input])
+    
+
+    prediction = model.predict(features)[0]
+    probabilities = model.predict_proba(features)[0]
+    confidence = max(probabilities) * 100
+    
+    print(f"Prediction: {prediction.upper()}")
+    print(f"Confidence: {confidence:.1f}%\n")
