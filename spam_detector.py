@@ -1,4 +1,5 @@
-import pandas as pd
+import time
+import pandas as pd # pandas
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer # Convert text to numerical features using TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -14,7 +15,6 @@ df = df[['label', 'message']]
 vectorizer = TfidfVectorizer() # encode the emails
 X = vectorizer.fit_transform(df['message']) # X is the feature matrix
 Y = df['label'] # Y is the target variable
-print(X.shape) # it will show (5572, 8674) which means we have 5572 emails and 8674 unique words in the dataset
 
 # split the data into training and testing sets
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = 0.2, random_state = 42, stratify = Y) # split the data into training and testing sets, with 20% of the data used for testing. The random_state parameter ensures reproducibility, and stratify ensures that the class distribution is maintained in both sets.
@@ -30,15 +30,14 @@ cm = confusion_matrix(Y_test, y_pred, labels = ['spam', 'ham'])
 print("Confusion Matrix:")
 print(cm)
 
-test_message = ["Congratulations! You won a free prize. Claim now!"]
-test_features = vectorizer.transform(test_message)
-
-# make a prediction using the trained model
-prediction = model.predict(test_features)[0]
-probabilities = model.predict_proba(test_features)[0]
-confidence = max(probabilities) * 100
-print(f"Prediction: {prediction.upper()}")
-print(f"Confidence: {confidence:.1f}%")
+# # make a prediction using the trained model
+# test_message = ["Congratulations! You won a free prize. Claim now!"]
+# test_features = vectorizer.transform(test_message)
+# prediction = model.predict(test_features)[0]
+# probabilities = model.predict_proba(test_features)[0]
+# confidence = max(probabilities) * 100
+# print(f"Prediction: {prediction.upper()}")
+# print(f"Confidence: {confidence:.1f}%")
 
 # graphic
 counts = df['label'].value_counts()
@@ -51,13 +50,15 @@ plt.show()
 
 # interactive prediction loop
 print("\nWelcome to Spam Detection AI")
+print("\nTraining model... Please wait...")
+time.sleep(5) # simulate training time
 print("Type 'quit' to exit.\n")
 
 while True:
     user_input = input("Enter message: ")
     
     if user_input.lower() == "quit":
-        print("Goodbye!")
+        print("See you later alligator!")
         break
     
     features = vectorizer.transform([user_input]) # transform the user input into numerical features
