@@ -30,18 +30,17 @@ cm = confusion_matrix(Y_test, y_pred, labels = ['spam', 'ham'])
 print("Confusion Matrix:")
 print(cm)
 
-
 test_message = ["Congratulations! You won a free prize. Claim now!"]
 test_features = vectorizer.transform(test_message)
 
-# Make a prediction using the trained model
+# make a prediction using the trained model
 prediction = model.predict(test_features)[0]
 probabilities = model.predict_proba(test_features)[0]
 confidence = max(probabilities) * 100
 print(f"Prediction: {prediction.upper()}")
 print(f"Confidence: {confidence:.1f}%")
 
-# Graphic
+# graphic
 counts = df['label'].value_counts()
 plt.bar(counts.index, counts.values, color=['green', 'red'])
 plt.title('Spam vs Ham Messages')
@@ -50,7 +49,7 @@ plt.ylabel('Number of Messages')
 plt.savefig('chart.png')
 plt.show()
 
-# Interactive prediction loop
+# interactive prediction loop
 print("\nWelcome to Spam Detection AI")
 print("Type 'quit' to exit.\n")
 
@@ -61,13 +60,11 @@ while True:
         print("Goodbye!")
         break
     
-
-    features = vectorizer.transform([user_input])
+    features = vectorizer.transform([user_input]) # transform the user input into numerical features
     
-
-    prediction = model.predict(features)[0]
-    probabilities = model.predict_proba(features)[0]
-    confidence = max(probabilities) * 100
+    prediction = model.predict(features)[0] # predict the label (spam or ham) for the user input
+    probabilities = model.predict_proba(features)[0] # get the probabilities for each class (spam and ham) for the user input
+    confidence = max(probabilities) * 100 # calculate the confidence of the prediction by taking the maximum probability and converting it to a percentage
     
     print(f"Prediction: {prediction.upper()}")
     print(f"Confidence: {confidence:.1f}%\n")
